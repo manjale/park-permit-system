@@ -33,12 +33,23 @@ class ParkController extends Controller
         $validpark = Validator::make($request->all(),[
             'name'=>'required|string',
             'location'=>'required',
-            'description'=>'required|text'
+            'description'=>'required'
         ]);
 
         if($validpark->fails()){
             return response()->json(['error'=>$validpark->errors()],403);
         }
+
+        $valid = $validpark->validated();
+
+        $park = Park::create([
+            'name'=>$valid['name'],
+            'location'=>$valid['location'],
+            'description'=>$valid['description']
+        ]);
+
+        return response()->json(['message'=>'park added succesfully',
+        'park'=>$park]);
     }
 
     /**
