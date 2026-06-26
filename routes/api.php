@@ -13,8 +13,8 @@ route::post('/register', [AuthController::class, 'register']);
 route::post('/login', [AuthController::class, 'login']);
 Route::middleware(['auth:sanctum','role:admin'])->group(function(){
 route::post('/createpark', [ParkController::class, 'store']);
-route::patch('/update', [ParkController::class, 'update']);
-//route::get('/availablepark', [ParkController::class, 'index']);
+route::putgit('/parks/{park}', [ParkController::class, 'update']);
+route::delete('/parks/{id}', [ParkController::class, 'destroy']);
 });
 
 route::middleware(['auth:sanctum'])->prefix('/v1')->group(function(){

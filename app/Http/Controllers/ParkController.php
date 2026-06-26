@@ -73,14 +73,41 @@ class ParkController extends Controller
      */
     public function update(Request $request, Park $park)
     {
-        //
+        $valid = Validator::make($request->all(),[
+            'name'=>'required|string',
+            'location'=>'required|string',
+            'description'=>'nullable|string'
+
+        ]);
+
+        if($valid->fails()){
+            return response()->json(['error'=>$valid->errors()], 403);
+        }
+
+        $upd = $valid->validated();
+
+       
+        $park->update([
+            'name'=>$upd['name'],
+            'location'=>$upd['location'],
+            'description'=>$upd['description']
+
+        ]);
+
+        return response()->json(['message'=>'park updated successfully',
+        'park'=>$park
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Park $park)
+    public function destroy(Park $park, $id)
     {
-        //
+        $delete = Park::findOrFail($id);
+
+        $delete->delete();
+
+        return response()->json(['message'=>'deleted susccessfully']);
     }
 }
