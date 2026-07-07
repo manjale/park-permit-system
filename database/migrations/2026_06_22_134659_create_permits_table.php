@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('park_id')->constrained('parks')->onDelete('cascade');
             $table->date('visit_date');
-            $table->enum('status',['pending', 'completed','rejected','used'])->default('pending');
+            $table->enum('status',['pending', 'approved','completed','rejected','used'])->default('pending');
             $table->integer('total_amount');
             $table->timestamps();
         });

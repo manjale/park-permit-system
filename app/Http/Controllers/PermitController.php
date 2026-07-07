@@ -36,7 +36,7 @@ class PermitController extends Controller
             'user_id'=>'required|exists:users,id',
             'park_id'=>'required|exists:parks,id',
             'visit_date'=>'required|date',
-            'status'=>'required|in:pending,completed,rejected,used',
+            'status'=>'required|in:pending,completed,rejected,approved,used,',
             'total_amount'=>'required'
         ]);
 
@@ -46,7 +46,7 @@ class PermitController extends Controller
 
         $permited = $permit->validated();
 
-        Permit::create([
+       $perm = Permit::create([
 
             'permit_no'=>$permited['permit_no'],
             'user_id'=>$permited['user_id'],
@@ -56,7 +56,9 @@ class PermitController extends Controller
             'total_amount'=>$permited['total_amount']
       
         ]);
-        return response()->json(['message'=>'you permission created successfully'], 201);
+        return response()->json(['message'=>'you permission created successfully',
+        'permission'=>$perm
+        ], 201);
     
     }
 

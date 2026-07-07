@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('permit_id')->constrained('parks')->onDelete('cascade');
-            $table->string('reference_no');
+            $table->string('reference_no')->unique();
             $table->integer('amount');
             $table->enum('status',['pending','paid','failed'])->default('pending');
             $table->timestamps();

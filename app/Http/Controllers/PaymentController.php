@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Payment;
+use App\Models\Permit;
 
 class PaymentController extends Controller
 {
@@ -30,12 +32,34 @@ class PaymentController extends Controller
     {
           $payment = Validator::make($request->all(),[
             'permit_id'=>'required|exists:permits,id',
-            'amount'=>'required|numeric',
-            'status'=>'required|in:pending,complete,failed',
-            'reference_no'=>'required|string'
+            //'amount'=>'required|numeric',
+            'status'=>'required|in:pending,paid,failed',
+            //'reference_no'=>'required|string'
 
         ]);
-    }
+
+        if($payment->fails()){
+            return response()->json(["error"=>$payment->errors()], 422);
+        }
+
+         $paid = $payment->validated();
+
+        $permit = Permit::findOrFail($paid['permit_id']);
+
+        $referenceNo = 'PAY-' . now()->format('YmdHis');
+
+       
+
+        $payment= Payment::create([
+            'permit_id'=>$permit->id,
+            'amount'=>$permit->total_amount,
+            'status'=>$paid['status'],
+            'reference_no'=>$referenceNo,
+        ]);
+
+        return response()->json(['message'=>'payment made successfully',
+        'payment'=>$payment
+        ]);    }
 
     /**
      * Display the specified resource.
