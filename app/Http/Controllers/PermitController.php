@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Permit;
+use App\Models\Payment;
 
 class PermitController extends Controller
 {
@@ -92,5 +93,18 @@ class PermitController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function approve(Permit $permit){
+
+    $payment = Payment::where('permit_id', $permit->id)->where('status','paid')->first();
+
+    if(!$payment){
+        return response()->json(['message'=>'permit can not be granted since you have not paid'],400);
+    }
+
+    $permit->update(['status'=>'approved']);
+
+    return response()->json(['message'=>'ppermit approved successfully']);
     }
 }

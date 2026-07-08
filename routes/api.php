@@ -22,12 +22,19 @@ route::delete('/parks/{id}', [ParkController::class, 'destroy']);
 route::middleware(['auth:sanctum'])->prefix('/v1')->group(function(){
     route::get('/parks', [ParkController::class, 'index']);
      route::post('/payment', [PaymentController::class, 'store']);
+     route::post('/permits', [PermitController::class, 'store']);
 
 
 });
 route::middleware(['auth:sanctum','role:service_officer'])->prefix('/v1')->group(function(){
-    route::post('/permits', [PermitController::class, 'store']);
-     //route::post('/payment', [PaymentController::class, 'store']);
+    //route::post('/permits/{permit}/approve', [PermitController::class, 'approve']);
+     //route::post('/payment', [PemitController::class, 'approve']);
+
+
+});
+route::middleware(['auth:sanctum','role:admin'])->prefix('/v1')->group(function(){
+    route::patch('/permits/{permit}/approve', [PermitController::class, 'approve']);
+     //route::post('/payment', [PemitController::class, 'approve']);
 
 
 });

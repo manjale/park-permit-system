@@ -33,7 +33,7 @@ class PaymentController extends Controller
           $payment = Validator::make($request->all(),[
             'permit_id'=>'required|exists:permits,id',
             //'amount'=>'required|numeric',
-            'status'=>'required|in:pending,paid,failed',
+            //'status'=>'required|in:pending,paid,failed',
             //'reference_no'=>'required|string'
 
         ]);
