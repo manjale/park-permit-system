@@ -105,6 +105,48 @@ class PermitController extends Controller
 
     $permit->update(['status'=>'approved']);
 
-    return response()->json(['message'=>'ppermit approved successfully']);
+    return response()->json(['message'=>'permit approved successfully']);
+    }
+
+    public function reject(Permit $permit){
+        if($permit->status !=='pending'){
+            return response()->json(['message'=>'only pending permit can be processed']);
+        }
+        $permit->update(['status'=>'rejected']);
+        return response()->json(['Message'=>'permit rejected successfully']);
+    }
+
+    public function verify(Request $request){
+        $permits = Validator::make($request->all(),[
+            'permit_no'=>'required|string'
+        ]);
+        if($permits->fails()){
+            return response()->json(['error'=>$permits->errors()], 422);
+        }
+
+        $valid = $permits->validated();
+
+        $permit = Permit::where('permit_no',$valid['permit_no'])->first();
+
+        if(!$permit){
+            return response()->json(['message'=>' permit is not found']);
+        }
+
+        if($permit->status ==='pending'){
+            return response()->json(['message'=>'permit is in pending state'], 403);
+        }
+        if($permit->status ==='rejected'){
+            return response()->json(['message'=>'permit is rejected'], 403);
+        }
+        if($permit->status ==='used'){
+            return response()->json(['message'=>'permit is used'], 403);
+        }
+        if($permit->status ==='completed'){
+            return response()->json(['message'=>'permit is completed'], 403);
+        }
+        return response()->json(['message'=>'permit verified successfully',
+        'data'=>$permit
+        
+        ]);
     }
 }

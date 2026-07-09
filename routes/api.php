@@ -27,14 +27,15 @@ route::middleware(['auth:sanctum'])->prefix('/v1')->group(function(){
 
 });
 route::middleware(['auth:sanctum','role:service_officer'])->prefix('/v1')->group(function(){
-    //route::post('/permits/{permit}/approve', [PermitController::class, 'approve']);
+    route::post('/permits/{permit}/verify', [PermitController::class, 'verify']);
      //route::post('/payment', [PemitController::class, 'approve']);
 
 
 });
 route::middleware(['auth:sanctum','role:admin'])->prefix('/v1')->group(function(){
     route::patch('/permits/{permit}/approve', [PermitController::class, 'approve']);
-     //route::post('/payment', [PemitController::class, 'approve']);
+     route::patch('/permits/{permit}/reject', [PermitController::class, 'reject']);
+     route::get('/permits/state', [PermitController::class, 'index']);
 
 
 });
