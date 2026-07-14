@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('permit_id')->constrained('permits')->onDelete('cascade');
             $table->string('visistor_name');
-            $table->string('visistor_type');
+            $table->enum('visistor_type',['adult','child']);
             $table->integer('quantity');
             $table->decimal('unit_price',10 ,2);
             $table->decimal('subtotal');

@@ -9,8 +9,7 @@ class Entry extends Model
     protected $fillable = [
         'permit_id',
         'entry_time',
-        'exit_time',
-        'checked_by'
+        'exit_time'
 
     ];
 

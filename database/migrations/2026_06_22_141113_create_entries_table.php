@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('entries', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('permit_id')->constrained('permits')->onDelete('cascade');
+            $table->dateTime('entry_time');
+            $table->dateTime('exit_time')->nullable();
             $table->timestamps();
         });
     }
